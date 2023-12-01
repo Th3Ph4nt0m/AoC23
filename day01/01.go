@@ -63,27 +63,6 @@ func Day01() {
 	println(sum)
 }
 
-// func Day01WithWords() {
-// 	// read a text file line by line
-
-// 	file := "day01/01.txt"
-// 	lines := readLines(file)
-
-// 	lineCount := len(lines)
-
-// 	// Find the first and the last digit of each input line
-
-// 	first := make([]int, lineCount)
-// 	last := make([]int, lineCount)
-
-// 	words := []string{"one", "two", "three", "four", "five", "six", "seven", "eight", "nine"}
-
-// 	// replace the words with numbers
-
-// 	for i, line := range lines {
-// 	}
-// }
-
 func parseSpelledDigits(input []string) []string {
 	// the words "one" to "nine" are spelled out in the input
 	// parse them into digits 1 to 9 and replace them in the input
