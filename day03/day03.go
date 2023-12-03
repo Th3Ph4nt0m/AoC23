@@ -12,8 +12,6 @@ func Day03() {
 
 	grid := make([][]rune, 140)
 
-	sum := 0
-
 	// initialize grid
 	for i := range grid {
 		grid[i] = make([]rune, 140)
@@ -26,8 +24,12 @@ func Day03() {
 		}
 	}
 
-	// Search for numbers. Numbers can have multiple digits. If the number adjecent to a symbol (not a .), add it to the sum.
+	println("Part 01: ", part01(grid))
+	println("Part 02: ", part02(grid))
+}
 
+func part01(grid [][]rune) int {
+	sum := 0
 	for i, line := range grid {
 		for j := 0; j < len(line); j++ {
 			char := grid[i][j]
@@ -44,7 +46,168 @@ func Day03() {
 			}
 		}
 	}
-	println(sum)
+	return sum
+}
+
+func part02(grid [][]rune) int {
+	sum := 0
+	for i, line := range grid {
+		for j := 0; j < len(line); j++ {
+			char := grid[i][j]
+			if char == '*' {
+				println("found star at ", i, j)
+				ratio := findNumbersArround(i, j, grid)
+				println("ratio: ", ratio)
+				if ratio != -1 {
+					sum += ratio
+				}
+			}
+		}
+	}
+	return sum
+}
+
+func checkIfFull(slice []int) bool {
+	if (slice[0] == -1) && (slice[1] == -1) {
+		return false
+	} else if (slice[0] == -1) || (slice[1] == -1) {
+		return false
+	}
+	return true
+}
+
+func findNumbersArround(i int, j int, grid [][]rune) int {
+	numbers := make([]int, 2)
+	// init
+	numbers[0] = -1
+	numbers[1] = -1
+
+	// check for i+1, i-1, j+1, j-1, i+1j+1, i+1j-1, i-1j+1, i-1j-1
+	if i+1 < len(grid) {
+		if unicode.IsDigit(grid[i+1][j]) {
+			println("found digit at ", i+1, j)
+			if !checkIfFull(numbers) {
+				println("Adding number to slice")
+				if numbers[0] == -1 {
+					numbers[0] = getCurrentNumber(i+1, j, grid)
+				} else {
+					if numbers[0] != getCurrentNumber(i+1, j, grid) {
+						numbers[1] = getCurrentNumber(i+1, j, grid)
+					}
+				}
+			}
+		}
+	}
+	if i-1 >= 0 {
+		if unicode.IsDigit(grid[i-1][j]) {
+			println("found digit at ", i-1, j)
+			if !checkIfFull(numbers) {
+				println("Adding number to slice")
+				if numbers[0] == -1 {
+					numbers[0] = getCurrentNumber(i-1, j, grid)
+				} else {
+					if numbers[0] != getCurrentNumber(i-1, j, grid) {
+						numbers[1] = getCurrentNumber(i-1, j, grid)
+					}
+				}
+			}
+		}
+	}
+	if j+1 < len(grid[i]) {
+		if unicode.IsDigit(grid[i][j+1]) {
+			println("found digit at ", i, j+1)
+			if !checkIfFull(numbers) {
+				println("Adding number to slice")
+				if numbers[0] == -1 {
+					numbers[0] = getCurrentNumber(i, j+1, grid)
+				} else {
+					if numbers[0] != getCurrentNumber(i, j+1, grid) {
+						numbers[1] = getCurrentNumber(i, j+1, grid)
+					}
+				}
+			}
+		}
+	}
+	if j-1 >= 0 {
+		if unicode.IsDigit(grid[i][j-1]) {
+			println("found digit at ", i, j-1)
+			if !checkIfFull(numbers) {
+				println("Adding number to slice")
+				if numbers[0] == -1 {
+					numbers[0] = getCurrentNumber(i, j-1, grid)
+				} else {
+					if numbers[0] != getCurrentNumber(i, j-1, grid) {
+						numbers[1] = getCurrentNumber(i, j-1, grid)
+					}
+				}
+			}
+		}
+	}
+	if i+1 < len(grid) && j+1 < len(grid[i]) {
+		if unicode.IsDigit(grid[i+1][j+1]) {
+			println("found digit at ", i+1, j+1)
+			if !checkIfFull(numbers) {
+				println("Adding number to slice")
+				if numbers[0] == -1 {
+					numbers[0] = getCurrentNumber(i+1, j+1, grid)
+				} else {
+					if numbers[0] != getCurrentNumber(i+1, j+1, grid) {
+						numbers[1] = getCurrentNumber(i+1, j+1, grid)
+					}
+				}
+			}
+		}
+	}
+	if i+1 < len(grid) && j-1 >= 0 {
+		if unicode.IsDigit(grid[i+1][j-1]) {
+			println("found digit at ", i+1, j-1)
+			if !checkIfFull(numbers) {
+				println("Adding number to slice")
+				if numbers[0] == -1 {
+					numbers[0] = getCurrentNumber(i+1, j-1, grid)
+				} else {
+					if numbers[0] != getCurrentNumber(i+1, j-1, grid) {
+						numbers[1] = getCurrentNumber(i+1, j-1, grid)
+					}
+				}
+			}
+		}
+	}
+	if i-1 >= 0 && j+1 < len(grid[i]) {
+		if unicode.IsDigit(grid[i-1][j+1]) {
+			println("found digit at ", i-1, j+1)
+			if !checkIfFull(numbers) {
+				println("Adding number to slice")
+				if numbers[0] == -1 {
+					numbers[0] = getCurrentNumber(i-1, j+1, grid)
+				} else {
+					if numbers[0] != getCurrentNumber(i-1, j+1, grid) {
+						numbers[1] = getCurrentNumber(i-1, j+1, grid)
+					}
+				}
+			}
+		}
+	}
+	if i-1 >= 0 && j-1 >= 0 {
+		if unicode.IsDigit(grid[i-1][j-1]) {
+			println("found digit at ", i-1, j-1)
+			if !checkIfFull(numbers) {
+				println("Adding number to slice")
+				if numbers[0] == -1 {
+					numbers[0] = getCurrentNumber(i-1, j-1, grid)
+				} else {
+					if numbers[0] != getCurrentNumber(i-1, j-1, grid) {
+						numbers[1] = getCurrentNumber(i-1, j-1, grid)
+					}
+				}
+			}
+		}
+	}
+	if numbers[0] != -1 && numbers[1] != -1 {
+		println("!!!!Found two numbers: ", numbers[0], numbers[1])
+		return numbers[0] * numbers[1]
+	}
+	return -1
 }
 
 func findPunctArround(i int, j int, grid [][]rune) bool {
@@ -124,7 +287,6 @@ func getCurrentNumber(i int, j int, grid [][]rune) int {
 	if err != nil {
 		panic(err)
 	}
-	println(number)
 	return number
 }
 
